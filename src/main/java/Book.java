@@ -1,4 +1,4 @@
-package org.example; // Или твое имя пакета
+package org.example; 
 
 import lombok.Data;
 
