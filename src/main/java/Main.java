@@ -9,14 +9,10 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        // Создаём парсер JSON
         Gson gson = new Gson();
 
         try (Reader reader = new FileReader("books.json")) {
-            // Читаем файл и превращаем в список посетителей
             List<Visitor> visitors = gson.fromJson(reader, new TypeToken<List<Visitor>>(){}.getType());
-
-            // Выполняем все задания
             task1(visitors);
             task2(visitors);
             task3(visitors);
@@ -46,7 +42,6 @@ public class Main {
     private static void task2(List<Visitor> visitors) {
         System.out.println("\n=== Задание 2: Книги без повторений ===");
 
-        // Собираем все книги от всех посетителей в один список
         List<Book> allBooks = visitors.stream()
                 .flatMap(v -> v.getFavoriteBooks().stream())
                 .distinct()  // Убираем дубликаты
@@ -102,7 +97,6 @@ public class Main {
     private static void task6(List<Visitor> visitors) {
         System.out.println("\n=== Задание 6: SMS подписчикам ===");
 
-        // Считаем среднее число книг по всем посетителям
         double averageBooks = visitors.stream()
                 .mapToInt(v -> v.getFavoriteBooks().size())
                 .average()
@@ -110,7 +104,6 @@ public class Main {
 
         System.out.println("Среднее число книг на посетителя: " + averageBooks);
 
-        // Создаём сообщения только для подписчиков
         Map<String, List<SmsMessage>> groupedMessages = visitors.stream()
                 .filter(v -> v.isSubscribed())  // Только подписчики
                 .map(v -> {
@@ -134,9 +127,8 @@ public class Main {
                 })
                 .collect(Collectors.groupingBy(SmsMessage::getMessage));
 
-        // Выводим результаты
         groupedMessages.forEach((category, messages) -> {
-            System.out.println("\nКатегория: " + category);
+            System.out.println("Категория: " + category);
             messages.forEach(sms -> {
                 System.out.println("  Телефон: " + sms.getPhoneNumber() + " -> " + sms.getMessage());
             });
